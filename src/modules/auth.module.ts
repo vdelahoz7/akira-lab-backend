@@ -4,7 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from '../services/auth.service';
-import { AuthResolver } from '../resolvers/auth.resolver';
+import { AuthController } from '../controllers/auth.controller';
 import { Admin } from '../entities/admin.entity';
 import { JwtStrategy } from '../strategies/jwt.strategy';
 
@@ -23,7 +23,8 @@ import { JwtStrategy } from '../strategies/jwt.strategy';
         }),
         TypeOrmModule.forFeature([Admin]),
     ],
-    providers: [AuthService, AuthResolver, JwtStrategy],
+    controllers: [AuthController],
+    providers: [AuthService, JwtStrategy],
     exports: [AuthService, JwtStrategy, PassportModule],
 })
 export class AuthModule { }

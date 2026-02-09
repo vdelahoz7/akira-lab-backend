@@ -1,7 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectsService } from '../services/projects.service';
-import { ProjectsResolver } from '../resolvers/projects.resolver';
+import { ProjectsController } from '../controllers/projects.controller';
 import { Project } from '../entities/project.entity';
 import { ClientsModule } from './clients.module';
 import { PaymentsModule } from './payments.module';
@@ -12,7 +12,8 @@ import { PaymentsModule } from './payments.module';
         forwardRef(() => ClientsModule),
         forwardRef(() => PaymentsModule),
     ],
-    providers: [ProjectsService, ProjectsResolver],
+    controllers: [ProjectsController],
+    providers: [ProjectsService],
     exports: [ProjectsService],
 })
 export class ProjectsModule { }

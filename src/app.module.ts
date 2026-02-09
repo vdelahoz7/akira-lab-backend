@@ -1,6 +1,4 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
@@ -40,12 +38,6 @@ import { Notification } from './entities/notification.entity';
             : false,
       }),
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: true,
-      playground: process.env.NODE_ENV !== 'production',
-      introspection: true,
-    }),
     AuthModule,
     ClientsModule,
     ProjectsModule,
@@ -63,4 +55,4 @@ import { Notification } from './entities/notification.entity';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

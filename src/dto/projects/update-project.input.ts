@@ -1,5 +1,4 @@
-import { InputType, Field, PartialType } from '@nestjs/graphql';
+import { PartialType } from '@nestjs/mapped-types';
 import { CreateProjectInput } from './create-project.input';
 
-@InputType()
 export class UpdateProjectInput extends PartialType(CreateProjectInput) { }

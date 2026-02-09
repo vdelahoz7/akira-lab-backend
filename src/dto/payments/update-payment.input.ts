@@ -1,5 +1,4 @@
-import { InputType, Field, PartialType } from '@nestjs/graphql';
+import { PartialType } from '@nestjs/mapped-types';
 import { CreatePaymentInput } from './create-payment.input';
 
-@InputType()
 export class UpdatePaymentInput extends PartialType(CreatePaymentInput) { }
