@@ -10,7 +10,6 @@ import * as bcrypt from 'bcrypt';
 import { Admin } from '../entities/admin.entity';
 import { RegisterInput } from '../dto/auth/register.input';
 import { LoginInput } from '../dto/auth/login.input';
-import { ChangePasswordInput } from '../dto/auth/change-password.input';
 import { AuthResponse } from '../dto/auth/auth-response';
 
 @Injectable()
@@ -57,30 +56,6 @@ export class AuthService {
 
     const token = this.jwtService.sign({ id: admin.id, email: admin.email });
     return { accessToken: token, admin };
-  }
-
-  async changePassword(
-    adminId: string,
-    changePasswordInput: ChangePasswordInput,
-  ): Promise<boolean> {
-    const admin = await this.adminRepository.findOne({
-      where: { id: adminId },
-    });
-    if (!admin) {
-      throw new UnauthorizedException('Usuario no encontrado');
-    }
-
-    const isPasswordValid = await bcrypt.compare(
-      changePasswordInput.oldPassword,
-      admin.password,
-    );
-    if (!isPasswordValid) {
-      throw new BadRequestException('La contraseña actual es incorrecta');
-    }
-
-    admin.password = await bcrypt.hash(changePasswordInput.newPassword, 10);
-    await this.adminRepository.save(admin);
-    return true;
   }
 
   async validateUser(payload: any): Promise<Admin | null> {

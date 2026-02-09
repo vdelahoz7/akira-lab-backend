@@ -1,8 +1,10 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class LoginInput {
-    @IsEmail({}, { message: 'Email inválido' })
-    email: string;
+  @IsEmail()
+  email: string;
 
-    password: string;
+  @IsString()
+  @MinLength(6)
+  password: string;
 }

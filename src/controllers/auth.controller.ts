@@ -8,24 +8,19 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginInput } from '../dto/auth/login.input';
-import { ChangePasswordInput } from '../dto/auth/change-password.input';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { RegisterInput } from '../dto/auth/register.input';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('register')
+  async register(@Body() registerInput: RegisterInput) {
+    return this.authService.register(registerInput);
+  }
+
   @Post('login')
   async login(@Body() loginInput: LoginInput) {
     return this.authService.login(loginInput);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch('change-password')
-  async changePassword(
-    @Request() req,
-    @Body() changePasswordInput: ChangePasswordInput,
-  ) {
-    return this.authService.changePassword(req.user.id, changePasswordInput);
   }
 }

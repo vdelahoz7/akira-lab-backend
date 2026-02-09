@@ -1,9 +1,10 @@
-import { IsEmail, MinLength } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class RegisterInput {
-    @IsEmail({}, { message: 'Email inválido' })
-    email: string;
+  @IsEmail()
+  email: string;
 
-    @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
-    password: string;
+  @IsString()
+  @MinLength(6)
+  password: string;
 }

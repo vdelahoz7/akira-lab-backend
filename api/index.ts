@@ -1,34 +1,34 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { Express } from 'express';
-import { INestApplication } from '@nestjs/common';
+import express, { Express } from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import { INestApplication } from '@nestjs/common';
 
-let server: Express;
+let cachedServer: Express;
 
 async function bootstrap(): Promise<Express> {
-  const nestApp: INestApplication = await NestFactory.create(AppModule);
+  const server = express();
 
-  nestApp.enableCors({
+  const app: INestApplication = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(server),
+  );
+
+  app.enableCors({
     origin: true,
     credentials: true,
   });
 
-  await nestApp.init();
+  await app.init();
 
-  const adapter = nestApp.getHttpAdapter() as ExpressAdapter;
-
-  return adapter.getInstance();
+  return server;
 }
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-): Promise<void> {
-  if (!server) {
-    server = await bootstrap();
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (!cachedServer) {
+    cachedServer = await bootstrap();
   }
 
-  server(req, res);
+  return cachedServer(req, res);
 }
