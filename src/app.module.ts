@@ -12,6 +12,12 @@ import { ProjectsModule } from './modules/projects.module';
 import { PaymentsModule } from './modules/payments.module';
 import { NotificationsModule } from './modules/notifications.module';
 
+import { Admin } from './entities/admin.entity';
+import { Client } from './entities/client.entity';
+import { Project } from './entities/project.entity';
+import { Payment } from './entities/payment.entity';
+import { Notification } from './entities/notification.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,14 +33,16 @@ import { NotificationsModule } from './modules/notifications.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [join(__dirname, '**/*.entity{.ts,.js}')],
+        entities: [Admin, Client, Project, Payment, Notification],
         synchronize: true, // Solo para desarrollo
+        ssl: configService.get<string>('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: true,
       playground: true,
+      introspection: true,
     }),
     AuthModule,
     ClientsModule,
