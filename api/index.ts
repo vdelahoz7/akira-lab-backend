@@ -1,14 +1,25 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default async function handler(req: any, res: any) {
-    const app = await NestFactory.create(AppModule);
+let app;
 
-    // Enable CORS if needed
-    app.enableCors();
+async function bootstrap() {
+  const nestApp = await NestFactory.create(AppModule);
 
-    await app.init();
+  nestApp.enableCors({
+    origin: true,
+    credentials: true,
+  });
 
-    const instance = app.getHttpAdapter().getInstance();
-    return instance(req, res);
+  await nestApp.init();
+  return nestApp;
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (!app) {
+    app = await bootstrap();
+  }
+
+  return app.getHttpAdapter().getInstance()(req, res);
 }
