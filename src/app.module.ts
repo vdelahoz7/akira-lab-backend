@@ -33,7 +33,7 @@ import { Notification } from './entities/notification.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [Admin, Client, Project, Payment, Notification],
-        synchronize: true, // Solo para desarrollo
+        synchronize: true,
         ssl:
           configService.get<string>('DB_SSL') === 'true'
             ? { rejectUnauthorized: false }
