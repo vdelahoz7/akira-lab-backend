@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { AuthController } from '../controllers/auth.controller';
 import { Admin } from '../entities/admin.entity';
 import { JwtStrategy } from '../strategies/jwt.strategy';
+import { StringValue } from 'ms';
 
 @Module({
   imports: [
@@ -14,13 +15,17 @@ import { JwtStrategy } from '../strategies/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') || 'default-secret',
-        signOptions: {
-          expiresIn: (configService.get<string>('JWT_EXPIRES_IN') ||
-            '1d') as any,
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const expires =
+          configService.get<StringValue>('JWT_EXPIRES_IN') ?? '1d';
+
+        return {
+          secret: configService.get<string>('JWT_SECRET') ?? 'default-secret',
+          signOptions: {
+            expiresIn: expires,
+          },
+        };
+      },
     }),
     TypeOrmModule.forFeature([Admin]),
   ],
