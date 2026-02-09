@@ -4,7 +4,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
-import { join } from 'path';
 
 import { AuthModule } from './modules/auth.module';
 import { ClientsModule } from './modules/clients.module';
@@ -35,7 +34,10 @@ import { Notification } from './entities/notification.entity';
         database: configService.get<string>('DB_DATABASE'),
         entities: [Admin, Client, Project, Payment, Notification],
         synchronize: true, // Solo para desarrollo
-        ssl: configService.get<string>('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
+        ssl:
+          configService.get<string>('DB_SSL') === 'true'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -61,4 +63,4 @@ import { Notification } from './entities/notification.entity';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}
