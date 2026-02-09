@@ -25,6 +25,8 @@ import { Notification } from './entities/notification.entity';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
+        url: process.env.DATABASE_URL,
+        autoLoadEntities: true,
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
@@ -55,4 +57,4 @@ import { Notification } from './entities/notification.entity';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}
