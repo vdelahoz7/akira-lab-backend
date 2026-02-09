@@ -43,7 +43,7 @@ import { Notification } from './entities/notification.entity';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      playground: true,
+      playground: process.env.NODE_ENV !== 'production',
       introspection: true,
     }),
     AuthModule,
