@@ -33,4 +33,17 @@ export class NotificationsService {
         notification.isRead = true;
         return await this.notificationRepository.save(notification);
     }
+
+    async markAllAsRead(): Promise<void> {
+        await this.notificationRepository.update({ isRead: false }, { isRead: true });
+    }
+
+    async delete(id: string): Promise<void> {
+        console.log(`Borrando notificación con ID: ${id}`);
+        const result = await this.notificationRepository.delete(id);
+        console.log(`Resultado del borrado: ${result.affected} filas afectadas`);
+        if (result.affected === 0) {
+            throw new NotFoundException(`Notificación con ID ${id} no encontrada`);
+        }
+    }
 }

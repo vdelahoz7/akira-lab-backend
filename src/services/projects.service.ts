@@ -49,12 +49,13 @@ export class ProjectsService {
 
     async update(id: string, updateProjectInput: UpdateProjectInput): Promise<Project> {
         const project = await this.findOne(id);
-        const updateData: Partial<Project> = { ...updateProjectInput };
-        if (updateProjectInput.startDate) {
-            updateData.startDate = new Date(updateProjectInput.startDate);
+        const { startDate, deliveryDate, ...otherFields } = updateProjectInput;
+        const updateData: Partial<Project> = { ...otherFields };
+        if (startDate) {
+            updateData.startDate = new Date(startDate);
         }
-        if (updateProjectInput.deliveryDate) {
-            updateData.deliveryDate = new Date(updateProjectInput.deliveryDate);
+        if (deliveryDate) {
+            updateData.deliveryDate = new Date(deliveryDate);
         }
         Object.assign(project, updateData);
         return await this.projectRepository.save(project);

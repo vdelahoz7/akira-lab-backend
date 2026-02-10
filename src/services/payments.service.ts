@@ -23,7 +23,7 @@ export class PaymentsService {
 
     async findAll(): Promise<Payment[]> {
         return await this.paymentRepository.find({
-            relations: ['project'],
+            relations: ['project', 'project.client'],
             order: { date: 'DESC' },
         });
     }
@@ -31,7 +31,7 @@ export class PaymentsService {
     async findOne(id: string): Promise<Payment> {
         const payment = await this.paymentRepository.findOne({
             where: { id },
-            relations: ['project'],
+            relations: ['project', 'project.client'],
         });
         if (!payment) {
             throw new NotFoundException(`Pago con ID ${id} no encontrado`);
@@ -48,11 +48,14 @@ export class PaymentsService {
 
     async update(id: string, updatePaymentInput: UpdatePaymentInput): Promise<Payment> {
         const payment = await this.findOne(id);
-        const updateData = { ...updatePaymentInput };
-        if (updateData.date) {
-            updateData.date = new Date(updateData.date);
+        const { date, ...rest } = updatePaymentInput;
+
+        Object.assign(payment, rest);
+
+        if (date) {
+            payment.date = new Date(date);
         }
-        Object.assign(payment, updateData);
+
         return await this.paymentRepository.save(payment);
     }
 

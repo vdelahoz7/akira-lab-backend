@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsDateString, IsNumber, Min } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class CreatePaymentInput {
     @IsNumber({}, { message: 'El monto debe ser un número' })
@@ -7,8 +6,7 @@ export class CreatePaymentInput {
     amount: number;
 
     @IsDateString()
-    @Type(() => Date)
-    date: Date | string;
+    date: string;
 
     @IsNotEmpty()
     projectId: string;

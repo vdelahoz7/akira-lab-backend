@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ClientStatus } from '../../types/client-status.enum';
 
 export class CreateClientInput {
   @IsNotEmpty({ message: 'El nombre es requerido' })
@@ -11,4 +12,8 @@ export class CreateClientInput {
   @IsOptional()
   @IsString()
   phone?: string;
+
+  @IsOptional()
+  @IsEnum(ClientStatus)
+  status?: ClientStatus;
 }

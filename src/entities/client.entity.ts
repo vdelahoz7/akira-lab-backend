@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 import { Project } from './project.entity';
 import { Notification } from './notification.entity';
+import { ClientStatus } from '../types/client-status.enum';
 
 @Entity('clients')
 export class Client {
@@ -15,6 +16,13 @@ export class Client {
 
     @Column({ nullable: true })
     phone: string;
+
+    @Column({
+        type: 'enum',
+        enum: ClientStatus,
+        default: ClientStatus.ACTIVE,
+    })
+    status: ClientStatus;
 
     @OneToMany(() => Project, (project) => project.client)
     projects: Project[];
