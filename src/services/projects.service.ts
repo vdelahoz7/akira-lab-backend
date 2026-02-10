@@ -13,7 +13,12 @@ export class ProjectsService {
     ) { }
 
     async create(createProjectInput: CreateProjectInput): Promise<Project> {
-        const project = this.projectRepository.create(createProjectInput);
+        const projectData = {
+            ...createProjectInput,
+            startDate: new Date(createProjectInput.startDate),
+            deliveryDate: new Date(createProjectInput.deliveryDate),
+        };
+        const project = this.projectRepository.create(projectData);
         return await this.projectRepository.save(project);
     }
 
@@ -44,7 +49,14 @@ export class ProjectsService {
 
     async update(id: string, updateProjectInput: UpdateProjectInput): Promise<Project> {
         const project = await this.findOne(id);
-        Object.assign(project, updateProjectInput);
+        const updateData: Partial<Project> = { ...updateProjectInput };
+        if (updateProjectInput.startDate) {
+            updateData.startDate = new Date(updateProjectInput.startDate);
+        }
+        if (updateProjectInput.deliveryDate) {
+            updateData.deliveryDate = new Date(updateProjectInput.deliveryDate);
+        }
+        Object.assign(project, updateData);
         return await this.projectRepository.save(project);
     }
 

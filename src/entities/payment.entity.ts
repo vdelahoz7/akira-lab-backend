@@ -9,7 +9,7 @@ export class Payment {
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     amount: number;
 
-    @Column()
+    @Column({ type: 'timestamp' })
     date: Date;
 
     @Column()

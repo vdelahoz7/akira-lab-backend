@@ -13,7 +13,11 @@ export class PaymentsService {
     ) { }
 
     async create(createPaymentInput: CreatePaymentInput): Promise<Payment> {
-        const payment = this.paymentRepository.create(createPaymentInput);
+        const paymentData = {
+            ...createPaymentInput,
+            date: new Date(createPaymentInput.date),
+        };
+        const payment = this.paymentRepository.create(paymentData);
         return await this.paymentRepository.save(payment);
     }
 
@@ -44,7 +48,11 @@ export class PaymentsService {
 
     async update(id: string, updatePaymentInput: UpdatePaymentInput): Promise<Payment> {
         const payment = await this.findOne(id);
-        Object.assign(payment, updatePaymentInput);
+        const updateData = { ...updatePaymentInput };
+        if (updateData.date) {
+            updateData.date = new Date(updateData.date);
+        }
+        Object.assign(payment, updateData);
         return await this.paymentRepository.save(payment);
     }
 

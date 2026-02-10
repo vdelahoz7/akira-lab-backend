@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString, IsEnum, IsDate } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsEnum, IsDateString } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ProjectStatus } from '../../types/project-status.enum';
 
 export class CreateProjectInput {
@@ -13,11 +14,11 @@ export class CreateProjectInput {
     @IsString()
     notes?: string;
 
-    @IsDate()
-    startDate: Date;
+    @IsDateString({}, { message: 'startDate debe ser una fecha válida' })
+    startDate: string;
 
-    @IsDate()
-    deliveryDate: Date;
+    @IsDateString({}, { message: 'deliveryDate debe ser una fecha válida' })
+    deliveryDate: string;
 
     @IsNotEmpty()
     clientId: string;

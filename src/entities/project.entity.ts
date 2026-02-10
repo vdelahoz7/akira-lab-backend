@@ -21,10 +21,10 @@ export class Project {
     @Column({ nullable: true })
     notes: string;
 
-    @Column()
+    @Column({ type: 'timestamp' })
     startDate: Date;
 
-    @Column()
+    @Column({ type: 'timestamp' })
     deliveryDate: Date;
 
     @Column()
