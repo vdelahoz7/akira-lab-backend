@@ -4,13 +4,17 @@ import { ProjectsService } from '../services/projects.service';
 import { ProjectsController } from '../controllers/projects.controller';
 import { Project } from '../entities/project.entity';
 import { ClientsModule } from './clients.module';
-import { PaymentsModule } from './payments.module';
+import { IncomesModule } from './incomes.module';
+import { ActivitiesModule } from './activities.module';
+import { NotificationsModule } from './notifications.module';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([Project]),
         forwardRef(() => ClientsModule),
-        forwardRef(() => PaymentsModule),
+        forwardRef(() => IncomesModule),
+        ActivitiesModule,
+        NotificationsModule,
     ],
     controllers: [ProjectsController],
     providers: [ProjectsService],

@@ -6,8 +6,10 @@ import { APP_PIPE } from '@nestjs/core';
 import { AuthModule } from './modules/auth.module';
 import { ClientsModule } from './modules/clients.module';
 import { ProjectsModule } from './modules/projects.module';
-import { PaymentsModule } from './modules/payments.module';
+import { IncomesModule } from './modules/incomes.module';
 import { NotificationsModule } from './modules/notifications.module';
+import { ExpensesModule } from './modules/expenses.module';
+import { ActivitiesModule } from './modules/activities.module';
 
 @Module({
   imports: [
@@ -31,8 +33,10 @@ import { NotificationsModule } from './modules/notifications.module';
     AuthModule,
     ClientsModule,
     ProjectsModule,
-    PaymentsModule,
+    IncomesModule,
     NotificationsModule,
+    ExpensesModule,
+    ActivitiesModule,
   ],
 
   providers: [
@@ -46,4 +50,4 @@ import { NotificationsModule } from './modules/notifications.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

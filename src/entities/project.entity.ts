@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn } from 'typeorm';
 import { Client } from './client.entity';
-import { Payment } from './payment.entity';
+import { Income } from './income.entity';
 import { ProjectStatus } from '../types/project-status.enum';
 
 @Entity('projects')
@@ -14,11 +14,14 @@ export class Project {
     @Column({
         type: 'enum',
         enum: ProjectStatus,
-        default: ProjectStatus.IN_PROGRESS,
+        default: ProjectStatus.NEW,
     })
     status: ProjectStatus;
 
-    @Column({ nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
+    dueDate: Date;
+
+    @Column({ type: 'text', nullable: true })
     notes: string;
 
     @Column({ type: 'timestamp' })
@@ -33,8 +36,8 @@ export class Project {
     @ManyToOne(() => Client, (client) => client.projects)
     client: Client;
 
-    @OneToMany(() => Payment, (payment) => payment.project)
-    payments: Payment[];
+    @OneToMany(() => Income, (income) => income.project)
+    incomes: Income[];
 
     @CreateDateColumn()
     createdAt: Date;

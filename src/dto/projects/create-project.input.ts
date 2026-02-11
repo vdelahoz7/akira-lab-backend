@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsEnum, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsEnum, IsDateString, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ProjectStatus } from '../../types/project-status.enum';
 
@@ -9,6 +9,10 @@ export class CreateProjectInput {
 
     @IsEnum(ProjectStatus)
     status: ProjectStatus;
+
+    @IsOptional()
+    @IsDateString()
+    dueDate?: string;
 
     @IsOptional()
     @IsString()

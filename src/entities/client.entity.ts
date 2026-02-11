@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } f
 import { Project } from './project.entity';
 import { Notification } from './notification.entity';
 import { ClientStatus } from '../types/client-status.enum';
+import { ClientSource } from '../types/client-source.enum';
 
 @Entity('clients')
 export class Client {
@@ -19,10 +20,23 @@ export class Client {
 
     @Column({
         type: 'enum',
+        enum: ClientSource,
+        default: ClientSource.MANUAL,
+    })
+    source: ClientSource;
+
+    @Column({
+        type: 'enum',
         enum: ClientStatus,
-        default: ClientStatus.ACTIVE,
+        default: ClientStatus.NEW,
     })
     status: ClientStatus;
+
+    @Column({ type: 'simple-array', nullable: true })
+    tags: string[];
+
+    @Column({ type: 'text', nullable: true })
+    notes: string;
 
     @OneToMany(() => Project, (project) => project.client)
     projects: Project[];
