@@ -15,9 +15,12 @@ async function bootstrap() {
   }));
 
   app.enableCors({
-    origin: true,
+    origin: process.env.NODE_ENV === 'production'
+      ? ['https://akira-lab-frontend.vercel.app']
+      : true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
   });
 
   await app.listen(3000);
